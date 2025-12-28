@@ -25,10 +25,19 @@ spring:
           auth: true
           starttls:
             enable: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 server:
   port: 8084
 
+rabbitmq:
+  notification:
+    exchange: notification.events
+    queue: notification-service.queue
 
 worker-pool:
   in-app:
