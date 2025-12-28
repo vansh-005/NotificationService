@@ -1,5 +1,6 @@
 package com.example.notificationservice.entities;
 
+import com.example.notificationservice.DTOs.NotificationEvent;
 import com.example.notificationservice.enums.NotificationChannels;
 import com.example.notificationservice.enums.NotificationType;
 import com.example.notificationservice.enums.Status;
@@ -38,8 +39,10 @@ public class NotificationJobs {
 //    @Column(columnDefinition = "jsonb")
 //    private Map<String, Object> payload;
 
-    @Column(nullable = false)
-    private String payload;
+    @Column(nullable = false, columnDefinition = "jsonb")
+    @Convert(converter = NotificationEventConverter.class)
+    private NotificationEvent payload;
+
 
     @Enumerated(EnumType.STRING)
     private Status status;

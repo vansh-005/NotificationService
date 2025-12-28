@@ -8,18 +8,13 @@ import com.example.notificationservice.entities.NotificationPreferences;
 import com.example.notificationservice.entities.ProcessedEvent;
 import com.example.notificationservice.entities.Users;
 import com.example.notificationservice.enums.NotificationChannels;
-import com.example.notificationservice.enums.NotificationType;
-import com.example.notificationservice.enums.TargetType;
 import com.example.notificationservice.repositories.NotificationJobsRepository;
 import com.example.notificationservice.repositories.NotificationPreferencesRepository;
 import com.example.notificationservice.repositories.ProcessedEventRepository;
 import com.example.notificationservice.repositories.SubscriptionsRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Component;
-//import tools.jackson.databind.ObjectMapper
-//import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,9 +28,9 @@ public class NotificationEventHandler {
     private final SubscriptionsRepository subscriptionsRepository;
     private final NotificationPreferencesRepository notificationPreferencesRepository;
     private final NotificationJobsRepository notificationJobsRepository;
-//    private final ObjectMapper objectMapper;
 
     public void handle(NotificationEnvelope envelope){
+
         if(processedEventRepository.existsByEventId(envelope.eventId())){
             return;
         }
@@ -45,7 +40,7 @@ public class NotificationEventHandler {
                     "Invalid payload for Notification event: " + envelope.payload().getClass()
             );
         }
-        String payloadJson = envelope.payload().toString();
+
         Set<Users> users = new HashSet<>();
 
         for(TargetRef targetRef: event.targets()){
@@ -79,7 +74,8 @@ public class NotificationEventHandler {
                 job.setUser(user);
                 job.setNotificationType(event.notificationType());
                 job.setNotificationChannel(channel);
-                job.setPayload(payloadJson);
+             // verify this once
+                job.setPayload(event);
 
                 jobs.add(job);
             }
@@ -87,5 +83,4 @@ public class NotificationEventHandler {
         notificationJobsRepository.saveAll(jobs);
         processedEventRepository.save(new ProcessedEvent(envelope.eventId()));
     }
-
 }
