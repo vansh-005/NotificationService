@@ -16,7 +16,7 @@ public class ExecutorConfig {
     @Bean("inAppExecutor")
     public Executor inAppWorkerPool(){
         return new ThreadPoolExecutor (
-                inAppThreadCount,inAppThreadCount,0l, TimeUnit.MILLISECONDS,
+                inAppThreadCount,inAppThreadCount, 0L, TimeUnit.MILLISECONDS,
                 new ArrayBlockingQueue<>(500),
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );
@@ -24,7 +24,10 @@ public class ExecutorConfig {
 
     @Bean("emailExecutor")
     public Executor emailWorkerPool(){
-
-        return Executors.newFixedThreadPool(emailThreadCount);
+        return new ThreadPoolExecutor (
+                emailThreadCount,emailThreadCount,0L, TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<>(500),
+                new ThreadPoolExecutor.CallerRunsPolicy()
+        );
     }
 }
