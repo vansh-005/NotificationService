@@ -35,10 +35,6 @@ public class NotificationJobs {
 
     private NotificationType notificationType;
 
-//    @Type(JsonType.class)   // hibernate-types
-//    @Column(columnDefinition = "jsonb")
-//    private Map<String, Object> payload;
-
     @Column(nullable = false, columnDefinition = "jsonb")
     @Convert(converter = NotificationEventConverter.class)
     private NotificationEvent payload;

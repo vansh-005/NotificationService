@@ -4,6 +4,7 @@ package com.example.notificationservice.entities;
 import com.example.notificationservice.DTOs.NotificationEvent;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+import org.springframework.beans.factory.annotation.Value;
 import tools.jackson.databind.ObjectMapper;
 
 @Converter(autoApply = false)
@@ -11,6 +12,7 @@ public class NotificationEventConverter
         implements AttributeConverter<NotificationEvent, String> {
 
     private static final ObjectMapper mapper = new ObjectMapper();
+
 
     @Override
     public String convertToDatabaseColumn(NotificationEvent event) {
