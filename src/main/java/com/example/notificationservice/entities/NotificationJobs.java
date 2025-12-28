@@ -34,10 +34,12 @@ public class NotificationJobs {
 
     private NotificationType notificationType;
 
-    @Type(JsonType.class)   // hibernate-types
-    @Column(columnDefinition = "jsonb")
-    private Map<String, Object> payload;
+//    @Type(JsonType.class)   // hibernate-types
+//    @Column(columnDefinition = "jsonb")
+//    private Map<String, Object> payload;
 
+    @Column(nullable = false)
+    private String payload;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -57,6 +59,9 @@ public class NotificationJobs {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        status = Status.PENDING;
+        retryCount = 0;
+
     }
     @PostUpdate
     protected void onUpdate() {
