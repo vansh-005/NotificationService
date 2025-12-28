@@ -4,11 +4,12 @@ import com.example.notificationservice.enums.NotificationChannels;
 import com.example.notificationservice.enums.NotificationType;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 
 public record UpdateNotificationPreference(
         String username,
         Set<NotificationType> notificationTypes,
-        Set<NotificationChannels> notificationChannels,
+        List<NotificationChannels> notificationChannels,
         Instant updatedAt
 ){}
