@@ -2,14 +2,17 @@ package com.example.notificationservice.entities;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.catalina.User;
 
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-
+@Getter
+@Setter
 public class InAppNotifications {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +23,9 @@ public class InAppNotifications {
     private Users user;
 
     private String title;
+
+    @Column(unique = true)
+    private Long jobId;
 
     private String body;
 

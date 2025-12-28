@@ -14,8 +14,31 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: my-email@gmail.com
+    password: myPassword
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 server:
   port: 8084
 
+
+worker-pool:
+  in-app:
+    thread-count: 4
+    polling-interval: 1000
+    batch-size: 5
+    max-retries: 5
+  email:
+    thread-count: 8
+    polling-interval: 1000
+    batch-size: 30
+    max-retries: 5
 

@@ -11,7 +11,7 @@ public record NotificationEvent (
         String eventId, // For idempotency
         NotificationType notificationType,
         List<TargetRef> targets,
-        Map<String,Object> metaData, // move no., eval, score
+        MoveData moveData,
         Instant occurredAt
 ){}
 
