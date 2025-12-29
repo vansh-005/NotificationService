@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 
-public record UpdateNotificationPreference(
+public record UpdateNotificationPreferenceEvent(
         String username,
         Set<NotificationType> notificationTypes,
         List<NotificationChannels> notificationChannels,
