@@ -4,17 +4,15 @@ import com.example.notificationservice.DTOs.NotificationEvent;
 import com.example.notificationservice.enums.NotificationChannels;
 import com.example.notificationservice.enums.NotificationType;
 import com.example.notificationservice.enums.Status;
-import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 @Entity
 @NoArgsConstructor
@@ -35,8 +33,11 @@ public class NotificationJobs {
 
     private NotificationType notificationType;
 
-    @Column(nullable = false, columnDefinition = "jsonb")
-    @Convert(converter = NotificationEventConverter.class)
+
+
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", nullable = false)
     private NotificationEvent payload;
 
 

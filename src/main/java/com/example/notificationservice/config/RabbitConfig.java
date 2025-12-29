@@ -27,7 +27,14 @@ public class RabbitConfig {
 
     @Bean
     public Queue notificationQueue() {
-        return QueueBuilder.durable(notificationQueue).build();
+        return QueueBuilder.durable(notificationQueue)
+                .withArgument("x-dead-letter-exchange", "notification.dlx")
+                .withArgument("x-dead-letter-routing-key", "notification.failed")
+                .build();
+    }
+    @Bean
+    public Queue deadLetterQueue() {
+        return QueueBuilder.durable("notification.failed.queue").build();
     }
 
     @Bean

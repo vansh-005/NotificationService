@@ -21,15 +21,8 @@ public class NotificationPreferenceEventHandler {
     private final NotificationPreferencesRepository notificationPreferencesRepository;
     private final ProcessedEventRepository processedEventRepository;
 
-    public void handle(NotificationEnvelope envelope) {
-        if(processedEventRepository.existsByEventId(envelope.eventId())){
-            return;
-        }
-        if(!(envelope.payload()  instanceof UpdateNotificationPreference event)){
-            throw new IllegalArgumentException(
-                    "Notification preference does not match notification envelope payload" + envelope.payload().getClass()
-            );
-        }
+    public void handle(UpdateNotificationPreference event) {
+
         Users user = usersRepository.findByUsername(event.username())
                 .orElseThrow(() -> new IllegalStateException(
                         "User not found for notification preference update: " + event.username()
@@ -45,7 +38,6 @@ public class NotificationPreferenceEventHandler {
         notificationPreferences.setNotificationChannel(event.notificationChannels());
         notificationPreferences.setEnabledTypes(event.notificationTypes());
         notificationPreferencesRepository.save(notificationPreferences);
-        processedEventRepository.save(new ProcessedEvent(envelope.eventId()));
     }
 
 }

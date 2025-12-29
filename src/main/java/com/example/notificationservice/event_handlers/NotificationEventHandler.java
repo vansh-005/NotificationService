@@ -29,18 +29,7 @@ public class NotificationEventHandler {
     private final NotificationPreferencesRepository notificationPreferencesRepository;
     private final NotificationJobsRepository notificationJobsRepository;
 
-    public void handle(NotificationEnvelope envelope){
-
-        if(processedEventRepository.existsByEventId(envelope.eventId())){
-            return;
-        }
-
-        if(!(envelope.payload() instanceof NotificationEvent event)){
-            throw new IllegalArgumentException(
-                    "Invalid payload for Notification event: " + envelope.payload().getClass()
-            );
-        }
-
+    public void handle(NotificationEvent event){
         Set<Users> users = new HashSet<>();
 
         for(TargetRef targetRef: event.targets()){
@@ -51,7 +40,7 @@ public class NotificationEventHandler {
 
         // Understand this part properly
         Map<Long, NotificationPreferences> preferencesMap =
-        notificationPreferencesRepository.findByUsers(users)
+        notificationPreferencesRepository.findByUser(users)
                         .stream()
                                 .collect(Collectors.toMap(
                                         np -> np.getUser().getId(),
@@ -81,6 +70,5 @@ public class NotificationEventHandler {
             }
         }
         notificationJobsRepository.saveAll(jobs);
-        processedEventRepository.save(new ProcessedEvent(envelope.eventId()));
     }
 }

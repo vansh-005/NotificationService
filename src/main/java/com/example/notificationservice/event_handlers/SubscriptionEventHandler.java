@@ -21,16 +21,9 @@ public class SubscriptionEventHandler {
     private final SubscriptionsRepository subscriptionsRepository;
     private final ProcessedEventRepository processedEventRepository;
 
-    public void handle(NotificationEnvelope envelope){
+    public void handle(SubscriptionChangedEvent subscription){
 
-        if(processedEventRepository.existsByEventId(envelope.eventId())){
-            return;
-        }
-        if(!(envelope.payload() instanceof SubscriptionChangedEvent subscription)){
-            throw new IllegalArgumentException(
-                    "Invalid payload for SUBSCRIPTION_CHANGING" + envelope.payload().getClass()
-            );
-        }
+
         Users user = usersRepository.findByUsername(subscription.username()).orElseThrow(
                 () -> new IllegalStateException(
                         "User not found for subscription change: " + subscription.username()
@@ -53,7 +46,6 @@ public class SubscriptionEventHandler {
                 subscriptionsRepository.findByUserAndTargetTypeAndTargetId(user, subscription.targetType(), subscription.targetId()).ifPresent(subscriptionsRepository::delete);
             }
         }
-        processedEventRepository.save(new ProcessedEvent(envelope.eventId()));
     }
 
 }

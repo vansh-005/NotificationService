@@ -1,8 +1,8 @@
-package com.example.notificationservice.DTOs;
+    package com.example.notificationservice.DTOs;
 
-import com.example.notificationservice.enums.TargetType;
+    import com.example.notificationservice.enums.TargetType;
 
-public record TargetRef(
-        TargetType targetType,
-        String targetId
-){}
+    public record TargetRef(
+            TargetType targetType,
+            String targetId
+    ){}

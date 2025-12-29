@@ -12,11 +12,13 @@ import com.example.notificationservice.repositories.ProcessedEventRepository;
 import com.example.notificationservice.repositories.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class UserEventHandler {
 
     private final NotificationPreferencesRepository notificationPreferencesRepository;
@@ -24,15 +26,9 @@ public class UserEventHandler {
     private final ProcessedEventRepository processedEventRepository;
 
 
-    public void handleUserCreation(NotificationEnvelope envelope){
-        if(!(envelope.payload() instanceof UserCreatedEvent userInfo)){
-            throw new IllegalArgumentException(
-                    "Invalid payload for USER_CREATED" + envelope.payload().getClass()
-            );
-        }
-        if(processedEventRepository.existsByEventId(envelope.eventId())){
-            return;
-        }
+    public void handleUserCreation(UserCreatedEvent userInfo){
+
+        log.info("Creating user");
         Users user = new Users();
         user.setUsername(userInfo.username());
         user.setFirstName(userInfo.firstName());
@@ -48,18 +44,9 @@ public class UserEventHandler {
 //        notificationPreferencesRepository.save(notificationPreferences);
         // Since cascading enabled so saving user automatically saves notification preferences
         usersRepository.save(user);
-        processedEventRepository.save(new ProcessedEvent(envelope.eventId()));
+//        processedEventRepository.save(new ProcessedEvent(envelope.eventId()));
     }
-    public void handleUserUpdate(NotificationEnvelope envelope){
-        if(!(envelope.payload() instanceof UserUpdateEvent userInfo)){
-            throw new IllegalArgumentException(
-                    "Invalid payload for USER_UPDATE" + envelope.payload().getClass()
-            );
-        }
-
-        if (processedEventRepository.existsByEventId(envelope.eventId())) {
-            return;
-        }
+    public void handleUserUpdate(UserUpdateEvent userInfo){
         Users user = usersRepository.findByUsername(userInfo.username())
                 .orElseThrow(() -> new IllegalStateException(
                         "User not found for update: " + userInfo.username()
@@ -70,7 +57,5 @@ public class UserEventHandler {
         user.setLastName(userInfo.lastName());
         user.setEmail(userInfo.email());
         usersRepository.save(user);
-
-        processedEventRepository.save(new ProcessedEvent(envelope.eventId()));
     }
 }

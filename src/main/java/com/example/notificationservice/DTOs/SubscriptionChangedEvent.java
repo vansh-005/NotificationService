@@ -1,6 +1,6 @@
 package com.example.notificationservice.DTOs;
 
-import com.example.notificationservice.entities.SubscriptionAction;
+import com.example.notificationservice.enums.SubscriptionAction;
 import com.example.notificationservice.enums.TargetType;
 
 import java.time.Instant;

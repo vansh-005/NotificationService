@@ -1,4 +1,4 @@
-package com.example.notificationservice.entities;
+package com.example.notificationservice.enums;
 
 public enum SubscriptionAction {
     ADD, REMOVE

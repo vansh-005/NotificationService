@@ -3,17 +3,18 @@ spring:
   name: Notification Service
   datasource:
     url: jdbc:postgresql://localhost:5432/notif
-    username: notif
+    username: chess
     password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: public
   mail:
     host: smtp.gmail.com
     port: 587
@@ -30,6 +31,7 @@ spring:
     port: 5672
     username: guest
     password: guest
+    virtual-host: /
 
 server:
   port: 8084
@@ -42,12 +44,25 @@ rabbitmq:
 worker-pool:
   in-app:
     thread-count: 4
-    polling-interval: 1000
+    polling-interval: 10000
     batch-size: 5
     max-retries: 5
   email:
     thread-count: 8
-    polling-interval: 1000
+    polling-interval: 10000
     batch-size: 30
     max-retries: 5
-
+#
+#spring:
+#  rabbitmq:
+#    listener:
+#      simple:
+#        auto-startup: true
+#spring:
+#  rabbitmq:
+#    connection-timeout: 5000
+#spring:
+#  rabbitmq:
+#    listener:
+#      simple:
+#        missing-queues-fatal: false

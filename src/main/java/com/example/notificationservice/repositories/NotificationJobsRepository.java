@@ -27,7 +27,7 @@ public interface NotificationJobsRepository extends JpaRepository<NotificationJo
      SELECT id FROM notification_jobs
      WHERE status = 'PENDING'
          AND (next_attempt_at IS NULL OR next_attempt_at <= now())
-       AND channel = :channel
+       AND notification_channel = :channel
        AND (locked_at IS NULL OR locked_at < now() - interval '2 minutes')
      ORDER BY created_at
      LIMIT :batch
