@@ -14,6 +14,7 @@ import com.example.notificationservice.repositories.ProcessedEventRepository;
 import com.example.notificationservice.repositories.SubscriptionsRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class NotificationEventHandler {
 
     private final ProcessedEventRepository processedEventRepository;
@@ -30,6 +32,9 @@ public class NotificationEventHandler {
     private final NotificationJobsRepository notificationJobsRepository;
 
     public void handle(NotificationEvent event){
+
+        log.info("Handling notification event of type: " + event.notificationType());
+
         Set<Users> users = new HashSet<>();
 
         for(TargetRef targetRef: event.targets()){

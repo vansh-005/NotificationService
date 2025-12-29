@@ -81,8 +81,9 @@ public class NotificationEventRouter {
             }
             case "NOTIFICATION_EVENT" -> {
                 try{
-                NotificationEvent event = objectMapper.readValue(envelope.payload(), NotificationEvent.class);
-                notificationEventHandler.handle(event);
+                    log.info("Received notification payload {}", envelope.payload());
+                    NotificationEvent event = objectMapper.readValue(envelope.payload(), NotificationEvent.class);
+                    notificationEventHandler.handle(event);
                 }
                 catch (IOException ex){
                     log.error("Could not parse event {}", envelope.eventId());
